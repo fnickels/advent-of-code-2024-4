@@ -22,6 +22,9 @@ If you have successfully compiled the application using `make build` the `gol` e
 ./advent-of-code
 ```
 
+## Results
+
+The AoC stats from immediately after the part solution being posted are captured [here](./results.txt)
 
 ## Source Code
 
