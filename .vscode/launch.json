@@ -12,7 +12,7 @@
             "showLog": true,
             // "logOutput": "dap,debugger,gdbwire,lldbout,debuglineerr,rpc",
             "program": "${workspaceRoot}/src",
-            // "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}",
             "buildFlags": [
                 "-gcflags=\"all=-N -l\""
             ],
@@ -44,7 +44,7 @@
             "showLog": true,
             // "logOutput": "dap,debugger,gdbwire,lldbout,debuglineerr,rpc",
             "program": "${workspaceRoot}/src",
-            // "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}",
             "buildFlags": [
                 "-gcflags=\"all=-N -l\""
             ],

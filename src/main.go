@@ -44,6 +44,8 @@ func process(state State) Result {
 
 	result.part1 = countMatches(state, match)
 
+	result.part2 = countMatchesPart2(state)
+
 	return result
 }
 
@@ -66,12 +68,8 @@ func matchCount(state State, i, j int, match []rune) int {
 
 	count := 0
 
-	if i == 5 && j == 114 {
-		count = 0 // set break point here
-	}
-
 	mLen := len(match)
-	reverseMatch := make([]rune, mLen)
+	reverseMatch := []rune{}
 	for z := mLen - 1; z >= 0; z-- {
 		reverseMatch = append(reverseMatch, match[z])
 	}
@@ -81,54 +79,50 @@ func matchCount(state State, i, j int, match []rune) int {
 		testSlice := state.lines[i][j : j+mLen]
 		if matchRuneSlice(testSlice, match) {
 			count++
-		}
-		if matchRuneSlice(testSlice, reverseMatch) {
+		} else if matchRuneSlice(testSlice, reverseMatch) {
 			count++
 		}
 	}
 
 	// vertical match
 	if i+mLen <= len(state.lines) {
-		testSlice := make([]rune, mLen)
+		testSlice := []rune{}
 		for z := i; z < i+mLen; z++ {
 			testSlice = append(testSlice, state.lines[z][j])
 		}
 		if matchRuneSlice(testSlice, match) {
 			count++
-		}
-		if matchRuneSlice(testSlice, reverseMatch) {
+		} else if matchRuneSlice(testSlice, reverseMatch) {
 			count++
 		}
 	}
 
+	if i == 2 && j == 3 {
+		count = 0 // set break point here
+	}
+
 	// diagonal match
 	if i+mLen <= len(state.lines) && j+mLen <= len(state.lines[i]) {
-		testSlice := make([]rune, mLen)
-		for z := i; z < i+mLen; z++ {
-			for y := j; y < j+mLen; y++ {
-				testSlice = append(testSlice, state.lines[z][j])
-			}
+		testSlice := []rune{}
+		for q := 0; q < mLen; q++ {
+			testSlice = append(testSlice, state.lines[i+q][j+q])
 		}
 		if matchRuneSlice(testSlice, match) {
 			count++
-		}
-		if matchRuneSlice(testSlice, reverseMatch) {
+		} else if matchRuneSlice(testSlice, reverseMatch) {
 			count++
 		}
 	}
 
 	// reverse diagonal match
-	if i+mLen <= len(state.lines) && j-mLen > 0 {
-		testSlice := make([]rune, mLen)
-		for z := i; z < i+mLen; z++ {
-			for y := j; y > j-mLen; y-- {
-				testSlice = append(testSlice, state.lines[z][j])
-			}
+	if i+mLen <= len(state.lines) && j-mLen+1 >= 0 {
+		testSlice := []rune{}
+		for q := 0; q < mLen; q++ {
+			testSlice = append(testSlice, state.lines[i+q][j-q])
 		}
 		if matchRuneSlice(testSlice, match) {
 			count++
-		}
-		if matchRuneSlice(testSlice, reverseMatch) {
+		} else if matchRuneSlice(testSlice, reverseMatch) {
 			count++
 		}
 	}
@@ -175,4 +169,40 @@ func displayTargets(state State, i, j, mLen int) {
 		}
 		fmt.Printf("\n")
 	}
+}
+
+func countMatchesPart2(state State) int {
+	count := 0
+	for i := 0; i < len(state.lines)-2; i++ {
+		for j := 0; j < len(state.lines[0])-2; j++ {
+			count += matchCountPart2(state, i, j)
+		}
+	}
+	return count
+}
+
+func matchCountPart2(state State, i, j int) int {
+
+	if state.lines[i+1][j+1] == 'A' {
+		if state.lines[i][j] == 'M' && state.lines[i+2][j+2] == 'S' &&
+			state.lines[i+2][j] == 'M' && state.lines[i][j+2] == 'S' {
+			return 1
+		}
+
+		if state.lines[i][j] == 'S' && state.lines[i+2][j+2] == 'M' &&
+			state.lines[i+2][j] == 'M' && state.lines[i][j+2] == 'S' {
+			return 1
+		}
+
+		if state.lines[i][j] == 'M' && state.lines[i+2][j+2] == 'S' &&
+			state.lines[i+2][j] == 'S' && state.lines[i][j+2] == 'M' {
+			return 1
+		}
+
+		if state.lines[i][j] == 'S' && state.lines[i+2][j+2] == 'M' &&
+			state.lines[i+2][j] == 'S' && state.lines[i][j+2] == 'M' {
+			return 1
+		}
+	}
+	return 0
 }

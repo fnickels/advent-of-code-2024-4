@@ -106,6 +106,12 @@ gotest: | ## Execute Go Unit & Integration tests
 
 .PHONY: exec
 exec: ## Run the Go binary with test data (current O/S)
+	cp ./input-file-sample.txt ./input-file.txt
+	./$(APPNAME) 
+
+.PHONY: live
+live: ## Run the Go binary with test data (current O/S)
+	cp ./input-file-actual.txt ./input-file.txt
 	./$(APPNAME) 
 
 
