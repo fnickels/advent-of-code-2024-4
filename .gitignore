@@ -1,0 +1,6 @@
+#exclude the binary files
+/advent-of-code-2024-*
+
+# override global exclude
+!.vscode
+
